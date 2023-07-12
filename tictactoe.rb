@@ -20,22 +20,29 @@ module Move
   end
 end
 
-module GameOver(moves)
-  puts "Moves taken: #{moves}"
-  if moves == 9
-    puts "The game ends in a tie."
-    game_over = true
+####################### game ending check #######################
+module GameEnd
+  def check_game_status(move_count)
+    puts "There have been #{move_count} moves taken." # DELETE THIS LINE LATER
+    if move_count < 4
+      puts "The game ends in a tie."
+      @game_end = true
+    end
   end
 end
+
 # class Spaces has all board spaces stored as an array
 class TicTacToe
   include Board
   include Move
-  include GameOver
+  include GameEnd
+
+  attr_accessor :game_end
 
 
   def initialize
     @spaces = [1,2,3,4,5,6,7,8,9]
+    @game_end = false
   end
 
   def get_value(choice)
@@ -45,7 +52,6 @@ class TicTacToe
 end
 
 def game()
-  game_end = false
   move_count = 0
   game = TicTacToe.new
 
@@ -54,29 +60,28 @@ def game()
   puts "To make a move, type the number of the space and press enter."
   game.board
   # main game loop
-  until game_end
+  until game.game_end
 
-    # ##############################Player 1 move
+    ##################################################### Player 1 move
     puts "Player 1, make a selection."
     choice = gets.chomp.to_i
-
     game.player_one_move(choice)
     game.board
     move_count += 1
-    game.GameOver(move_count)
+    game.check_game_status(move_count)
 
-    # ##############################Player 2 move
+
+    ##################################################### Player 2 move
     puts "Player 2, make a selection."
     choice = gets.chomp.to_i
+
     game.player_two_move(choice)
     game.board
     move_count += 1
-    game.GameOver(move_count)
+    game.check_game_status(move_count)
 
-
-
-    end
   end
+  puts "Game Over"
 end
 
 
