@@ -20,10 +20,19 @@ module Move
   end
 end
 
+module GameOver(moves)
+  puts "Moves taken: #{moves}"
+  if moves == 9
+    puts "The game ends in a tie."
+    game_over = true
+  end
+end
 # class Spaces has all board spaces stored as an array
-class Spaces
+class TicTacToe
   include Board
   include Move
+  include GameOver
+
 
   def initialize
     @spaces = [1,2,3,4,5,6,7,8,9]
@@ -37,21 +46,38 @@ end
 
 def game()
   game_end = false
+  move_count = 0
+  game = TicTacToe.new
 
+  puts "Let\'s play Tic-Tac-Toe!"
+  puts "The game will alternate between player 1 (X's) and player 2 (O's)."
+  puts "To make a move, type the number of the space and press enter."
+  game.board
+  # main game loop
   until game_end
-    move_count = 0
 
-    # this will end the game if there are no winning conditions detected
-    if move_count == 9
-      game_end = true
+    # ##############################Player 1 move
+    puts "Player 1, make a selection."
+    choice = gets.chomp.to_i
+
+    game.player_one_move(choice)
+    game.board
+    move_count += 1
+    game.GameOver(move_count)
+
+    # ##############################Player 2 move
+    puts "Player 2, make a selection."
+    choice = gets.chomp.to_i
+    game.player_two_move(choice)
+    game.board
+    move_count += 1
+    game.GameOver(move_count)
+
+
+
     end
   end
 end
 
 
-spaces = Spaces.new
-spaces.board
-spaces.player_one_move(1)
-spaces.board
-spaces.player_two_move(5)
-spaces.board
+game()
