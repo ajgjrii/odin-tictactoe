@@ -57,9 +57,6 @@ module GameEnd
     elsif @spaces[2] == "X" && @spaces[4] == "X"  && @spaces[6] == "X"
       puts "Player 1 is the winner!"
       @game_end = true
-    elsif move_count == 9
-      puts "The game ends in a tie."
-      @game_end = true
     end
     ##########PLAYER 2 WIN CONDITIONS
     if @spaces[0] == "O" && @spaces[1] == "O"  && @spaces[2] == "O"
@@ -86,11 +83,14 @@ module GameEnd
     elsif @spaces[2] == "O" && @spaces[4] == "O"  && @spaces[6] == "O"
       puts "Player 2 is the winner!"
       @game_end = true
-    elsif move_count == 9
+    end
+
+    # Checks for game win condition FIRST. If there is no winner AND all moves used,
+    # then this statement will execute and end the game
+    if move_count == 9 && !@game_end
       puts "The game ends in a tie."
       @game_end = true
     end
-
   end
 end
 
